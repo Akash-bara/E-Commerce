@@ -140,4 +140,4 @@ const LogInPage = () => {
 	);
 };
 
-export default LoginPage;
+export default LogInPage;
