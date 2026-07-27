@@ -8,13 +8,22 @@ import paymentRoutes from './routes/paymentR.js';
 import analyticsRoutes from './routes/analyticsR.js';
 import { connectDB } from './lib/db.js';
 import cookieParser from 'cookie-parser';
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(
+  cors({
+    origin: "https://e-commerce-frontend-8wg7.onrender.com",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
+
 
 app.use("/api/auth",authRoutes);
 app.use("/api/products",productRoutes);
