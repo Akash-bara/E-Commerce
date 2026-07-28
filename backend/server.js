@@ -1,52 +1,54 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import authRoutes from './routes/authR.js';
-import productRoutes from './routes/productR.js';
-import cartRoutes from './routes/cartR.js';
-import couponRoutes from './routes/couponR.js';
-import paymentRoutes from './routes/paymentR.js';
-import analyticsRoutes from './routes/analyticsR.js';
-import { connectDB } from './lib/db.js';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import cors from "cors";
+
+import authRoutes from "./routes/authR.js";
+import productRoutes from "./routes/productR.js";
+import cartRoutes from "./routes/cartR.js";
+import couponRoutes from "./routes/couponR.js";
+import paymentRoutes from "./routes/paymentR.js";
+import analyticsRoutes from "./routes/analyticsR.js";
+
+import { connectDB } from "./lib/db.js";
+
 dotenv.config();
 
 const app = express();
-app.set("trust proxy", 1);  
-const port = process.env.PORT || 3000;
+
+app.set("trust proxy", 1);
+
+const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://e-commerce-frontend-cuoq.onrender.com",
+	"http://localhost:5173",
+	"https://e-commerce-frontend-cuoq.onrender.com",
 ];
 
 app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
+	cors({
+		origin(origin, callback) {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		credentials: true,
+	})
 );
-
 
 app.use(express.json());
 app.use(cookieParser());
 
-
-app.use("/api/auth",authRoutes);
-app.use("/api/products",productRoutes);
-app.use("/api/cart",cartRoutes);
-app.use("/api/coupon",couponRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/coupon", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-app.listen(port , () => {
-    console.log("Server is runnng http://localhost:"+port);
-    connectDB();
-})
-
+app.listen(PORT, () => {
+	connectDB();
+	console.log(`Server running on port ${PORT}`);
+});
