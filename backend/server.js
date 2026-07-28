@@ -14,9 +14,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://e-commerce-frontend-8wg7.onrender.com",
+];
+
 app.use(
   cors({
-    origin: "https://e-commerce-frontend-8wg7.onrender.com",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
