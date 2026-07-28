@@ -26,6 +26,13 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "E-Commerce Backend API is running 🚀",
+  });
+});
+
 app.use(express.json());
 app.use(cookieParser());
 
