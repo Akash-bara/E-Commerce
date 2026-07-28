@@ -16,12 +16,18 @@ const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://e-commerce-frontend-8wg7.onrender.com",
+  "https://e-commerce-frontend-cuoq.onrender.com",
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
