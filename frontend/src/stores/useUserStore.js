@@ -20,7 +20,9 @@ export const useUserStore = create((set, get) => ({
 			set({ user: res.data, loading: false });
 		} catch (error) {
 			set({ loading: false });
-			toast.error(error.response.data.message || "An error occurred");
+			toast.error(
+    error.response?.data?.message || error.message || "An error occurred"
+);
 		}
 	},
 	login: async (email, password) => {
@@ -32,7 +34,9 @@ export const useUserStore = create((set, get) => ({
 			set({ user: res.data, loading: false });
 		} catch (error) {
 			set({ loading: false });
-			toast.error(error.response.data.message || "An error occurred");
+			toast.error(
+    error.response?.data?.message || error.message || "An error occurred"
+);
 		}
 	},
 
@@ -98,10 +102,15 @@ axios.interceptors.response.use(
 
 				return axios(originalRequest);
 			} catch (refreshError) {
-				// If refresh fails, redirect to login or handle as needed
-				useUserStore.getState().logout();
-				return Promise.reject(refreshError);
-			}
+    refreshPromise = null;
+
+    useUserStore.setState({
+        user: null,
+        checkingAuth: false,
+    });
+
+    return Promise.reject(refreshError);
+}
 		}
 		return Promise.reject(error);
 	}
