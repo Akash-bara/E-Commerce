@@ -19,13 +19,13 @@ const setCookies = (res, accessToken, refreshToken) => {
     res.cookie("accessToken",accessToken ,{
         httpOnly:true,
         secure:process.env.NODE_ENV === "production",
-        sameSite:"strict",
+        sameSite:"none",
         maxAge: 15 * 60 * 1000
     });
     res.cookie("refreshToken",refreshToken ,{
         httpOnly:true,
         secure:process.env.NODE_ENV === "production",
-        sameSite:"strict",
+        sameSite:"none",
         maxAge: 7 * 24 * 60 * 60 * 1000
     });
 };
@@ -78,7 +78,7 @@ export const login  = async (req , res ) =>{
         res.status(401).json({ message:"Invalid Email and Password"});
     }
     } catch (error) {
-        console.log("Error in Log In Controller".error.message);
+        console.log("Error in Log In Controller",error.message);
         res.status(500).json({
             message: error.message
         })
@@ -130,7 +130,7 @@ export const refreshToken = async (req, res) =>{
         res.cookie("accessToken",accessToken ,{
             httpOnly:true,
             secure:process.env.NODE_ENV === "production",
-            sameSite:"strict",
+            sameSite:"none",
             maxAge: 15 * 60 * 1000
         });
 
